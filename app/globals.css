@@ -1,9 +1,13 @@
 @import "tailwindcss";
 
-@theme inline{
+@theme {
+  --color-lightHover: "#fcf4ff";
+  --color-darkHover: "#2a004a";
+  --color-darkTheme: "#11001F";
   --font-outfit: "Outfit", sans-serif;
-  --font-bebes: "Bebas Neue", sans-serif;
+  --font-ovo: "Ovo", serif;
 }
-body{
+
+body {
   font-family: var(--font-outfit);
 }
