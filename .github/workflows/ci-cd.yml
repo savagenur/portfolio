@@ -6,7 +6,6 @@ on:
   push:
     branches: [ main ]
 
-# Cancel older runs when new commits arrive on the same PR/branch
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -48,14 +47,15 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: write   # needed to comment Preview URL on PRs
+      pull-requests: write
     env:
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
     if: ${{ needs.ci.result == 'success' }}
     outputs:
-      url: ${{ steps.deploy.outputs.url }}
+      preview_url: ${{ steps.deploy_preview.outputs.url }}
+      production_url: ${{ steps.deploy_prod.outputs.url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -69,7 +69,7 @@ jobs:
       - name: Install deps
         run: npm ci
 
-      # Pull Vercel project linking + env vars for the right target
+      # Pull project settings from Vercel
       - name: Vercel Pull (Preview)
         if: github.event_name == 'pull_request'
         run: npx vercel pull --yes --environment=preview --token $VERCEL_TOKEN
@@ -78,7 +78,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: npx vercel pull --yes --environment=production --token $VERCEL_TOKEN
 
-      # Build the deployable artifact
+      # Build with Vercel
       - name: Build (Vercel Preview)
         if: github.event_name == 'pull_request'
         run: npx vercel build --token $VERCEL_TOKEN
@@ -87,9 +87,9 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: npx vercel build --prod --token $VERCEL_TOKEN
 
-      # Deploy the prebuilt artifact and capture the URL
+      # Deploy
       - name: Deploy (Preview)
-        id: deploy
+        id: deploy_preview
         if: github.event_name == 'pull_request'
         run: |
           URL=$(npx vercel deploy --prebuilt --token $VERCEL_TOKEN)
@@ -102,14 +102,13 @@ jobs:
           URL=$(npx vercel deploy --prebuilt --prod --token $VERCEL_TOKEN)
           echo "url=$URL" >> $GITHUB_OUTPUT
 
-      # Comment Preview URL on the PR for reviewers
+      # Comment Preview URL on PR
       - name: Comment Preview URL on PR
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v7
         with:
           script: |
-            const url = core.getInput('url', { required: false }) || process.env.DEPLOY_URL;
-            const previewUrl = '${{ steps.deploy.outputs.url }}';
+            const previewUrl = '${{ steps.deploy_preview.outputs.url }}';
             if (previewUrl) {
               github.rest.issues.createComment({
                 owner: context.repo.owner,
@@ -119,7 +118,8 @@ jobs:
               });
             }
 
-      - name: Echo URL (logs)
+      # Echo URLs to logs
+      - name: Echo Deploy URLs
         run: |
-          echo "Preview URL:  ${{ steps.deploy.outputs.url }}"
-          echo "Production URL: ${{ steps.deploy_prod.outputs.url }}"
+          echo "✅ Preview URL:  ${{ steps.deploy_preview.outputs.url }}"
+          echo "🚀 Production URL: ${{ steps.deploy_prod.outputs.url }}"
