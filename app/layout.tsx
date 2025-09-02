@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { Outfit, Ovo} from "next/font/google";
+import { Outfit, Ovo } from "next/font/google";
 import "./globals.css";
+import { DarkModeProvider } from "./context/DarkModeContext";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -24,8 +25,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${outfit} ${ovo} antialiased leading-8 overflow-x-hidden`}>
-        {children}
+      <body
+        className={`${outfit} ${ovo} antialiased leading-8 overflow-x-hidden  dark:bg-darkTheme dark:text-white`}
+      >
+        <DarkModeProvider>{children}</DarkModeProvider>
       </body>
     </html>
   );
