@@ -28,14 +28,32 @@ const Services = () => {
       >
         My services
       </motion.h2>
-      <motion.p
+      <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.7 }}
-        className="text-center max-w-2xl mx-auto mt-5 mb-12 font-ovo"
+        className="text-center max-w-3xl mx-auto mt-5 mb-12 font-ovo"
       >
-        Test
-      </motion.p>
+        I offer end-to-end frontend development services, including:
+        <ul>
+          <li>
+            - Web Development – Creating responsive, high-performance websites
+            with modern frameworks.
+          </li>
+          <li>
+            - Mobile Development – Building cross-platform mobile apps using
+            Flutter.
+          </li>
+          <li>
+            - UI/UX Implementation – Turning designs into pixel-perfect,
+            user-friendly interfaces.
+          </li>
+          <li>
+            - Performance Optimization – Ensuring fast, scalable, and efficient
+            applications.
+          </li>
+        </ul>
+      </motion.div>
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
@@ -56,13 +74,13 @@ const Services = () => {
             <p className="text-sm my-4 text-gray-600 leading-5 dark:text-white/80">
               {item.description}
             </p>
-            <a
+            {/* <a
               href={item.link}
               className="flex items-center gap-2 text-sm mt-5"
             >
               Read more
               <Image src={assets.right_arrow} alt="" className="w-4" />
-            </a>
+            </a> */}
           </motion.div>
         ))}
       </motion.div>

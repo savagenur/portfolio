@@ -1,14 +1,12 @@
 import { assets } from "@/assets/assets";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { motion } from "motion/react";
+import toast from "react-hot-toast";
 
 const Contact = () => {
-  const [result, setResult] = useState("");
-
-  const onSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setResult("Sending...");
 
     const form = e.currentTarget;
     const fd = new FormData(form); // includes your inputs (name, email, message, ...)
@@ -21,11 +19,11 @@ const Contact = () => {
     const data: { success: boolean; message?: string } = await res.json();
 
     if (data.success) {
-      setResult("Form Submitted Successfully");
+      toast.success("Form Submitted Successfully");
       form.reset();
     } else {
       console.error("Error", data);
-      setResult(data.message ?? "Something went wrong");
+      toast.success(data.message ?? "Something went wrong");
     }
   };
   return (
@@ -69,7 +67,7 @@ const Contact = () => {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ delay: 0.9, duration: 0.5 }}
-        onSubmit={onSubmit}
+        onSubmit={(e) => toast.promise(onSubmit(e), { loading: "Sending..." })}
         className="max-w-2xl mx-auto"
       >
         <div className="grid grid_cols_auto gap-6 mt-10 mb-8">
@@ -109,14 +107,13 @@ const Contact = () => {
           whileHover={{ scale: 1.05 }}
           initial={{ y: 50, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.3,delay:.6 }}
+          transition={{ duration: 0.3, delay: 0.6 }}
           type="submit"
           className="py-3 px-8 w-max flex items-center justify-between gap-2 bg-black/80 text-white rounded-full mx-auto hover:bg-black duration-500 cursor-pointer active:scale-95 dark:bg-transparent dark:border-[0.5px] dark:hover:bg-darkHover"
         >
           Submit now
           <Image src={assets.right_arrow_white} alt="" className="w-4" />
         </motion.button>
-        <p className="mt-4">{result}</p>
       </motion.form>
     </motion.div>
   );

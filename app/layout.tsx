@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Outfit, Ovo } from "next/font/google";
 import "./globals.css";
 import { DarkModeProvider } from "./context/DarkModeContext";
+import { Toaster } from "react-hot-toast";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -28,6 +29,8 @@ export default function RootLayout({
       <body
         className={`${outfit} ${ovo} antialiased leading-8 overflow-x-hidden  dark:bg-darkTheme dark:text-white`}
       >
+        <Toaster />
+
         <DarkModeProvider>{children}</DarkModeProvider>
       </body>
     </html>

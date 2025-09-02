@@ -55,16 +55,17 @@ const About = () => {
           className="flex-1"
         >
           <p className="mb-10 max-w-2xl font-ovo">
-            I am an experienced Frontend Developer with over 5 years of
-            professional experience in building and maintaining responsive web.
-            My expertise lies in creating user-friendly, visually appealing, and
-            high-performance websites using modern web technologies.
+            Over the years, I&apos;ve worked extensively with frameworks like
+            Next.js, React, and Flutter to deliver projects that balance
+            performance and design. I focus on solving real-world problems with
+            practical solutions, whether it&apos;s optimizing a UI for speed or
+            creating features that improve user engagement.
           </p>
           <motion.ul
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 1 }}
-            className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl"
+            className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 max-w-2xl"
           >
             {infoList.map(({ icon, iconDark, title, description }, index) => (
               <motion.li
@@ -89,19 +90,20 @@ const About = () => {
           <motion.h4
             initial={{ y: 0, opacity: 0 }}
             whileInView={{ y: 20, opacity: 1 }}
-            transition={{ duration: 1.3, delay: .5}}
+            transition={{ duration: 1.3, delay: 0.5 }}
             className="my-6 text-gray-700 font-ovo dark:text-white/80"
           >
             Tools I use
           </motion.h4>
           <motion.ul
-           initial={{  opacity: 0 }}
-            whileInView={{  opacity: 1 }}
-            transition={{ duration: 1.5, delay: .6}}
-           className="flex items-center gap-3 sm:gap-5">
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 1.5, delay: 0.6 }}
+            className="flex items-center gap-3 sm:gap-5 flex-wrap"
+          >
             {toolsData.map((tool, index) => (
               <motion.li
-               whileHover={{  scale:1.1 }}
+                whileHover={{ scale: 1.1 }}
                 key={index}
                 className="flex items-center justify-center w-12 sm:w-14 aspect-square border border-gray-400 rounded-lg cursor-pointer hover:-translate-y-1 duration-500"
               >
