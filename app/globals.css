@@ -1,9 +1,17 @@
 @import "tailwindcss";
-
-@theme inline{
+@custom-variant dark (&:where(.dark, .dark *));
+@theme {
+  --color-lightHover: #fcf4ff;
+  --color-darkHover: #2a004a;
+  --color-darkTheme: #11001f;
   --font-outfit: "Outfit", sans-serif;
-  --font-bebes: "Bebas Neue", sans-serif;
+  --font-ovo: "Ovo", serif;
+  --shadow-boxShadow: 4px 4px 0 #fff;
 }
-body{
+
+body {
   font-family: var(--font-outfit);
+}
+@utility grid_cols_auto {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
