@@ -1,12 +1,11 @@
 "use client";
 import { assets } from "@/assets/assets";
 import Image from "next/image";
-import React, {
-  Dispatch,
-  SetStateAction,
+import Link from "next/link";
+import {
   useEffect,
   useRef,
-  useState,
+  useState
 } from "react";
 import { useDarkMode } from "../context/DarkModeContext";
 
@@ -45,13 +44,13 @@ const Navbar = () => {
             : ""
         }`}
       >
-        <a href={"#top"}>
+        <Link href={"/#top"}>
           <Image
             src={isDarkMode ? assets.logo_dark : assets.logo}
             alt=""
             className="w-28 cursor-pointer mr-14"
           />
-        </a>
+        </Link>
         <ul
           className={`hidden md:flex items-center gap-6 lg:gap-8 rounded-full px-12 py-3 font-ovo ${
             isScroll
@@ -60,19 +59,19 @@ const Navbar = () => {
           }`}
         >
           <li>
-            <a href="#top">Home</a>
+            <Link href="/#top">Home</Link>
           </li>
           <li>
-            <a href="#about">About me</a>
+            <Link href="/#about">About me</Link>
           </li>
           <li>
-            <a href="#services">Services</a>
+            <Link href="/#services">Services</Link>
           </li>
           <li>
-            <a href="#work">My work</a>
+            <Link href="/#work">My work</Link>
           </li>
           <li>
-            <a href="#contact">Contact me</a>
+            <Link href="/#contact">Contact me</Link>
           </li>
         </ul>
         <div className="flex gap-4 items-center">
@@ -86,8 +85,8 @@ const Navbar = () => {
               className="w-6"
             />
           </button>
-          <a
-            href="#contact"
+          <Link
+            href="/#contact"
             className="font-ovo hidden lg:flex items-center gap-3 px-10 py-2.5 border border-gray-500 rounded-full ml-4 dark:border-white/50 active:scale-95 transition"
           >
             Contact{" "}
@@ -96,7 +95,7 @@ const Navbar = () => {
               alt=""
               className="w-3"
             />
-          </a>
+          </Link>
           <button
             className="block md:hidden ml-3 cursor-pointer"
             onClick={openMenu}
@@ -118,19 +117,19 @@ const Navbar = () => {
             />
           </div>
           <li onClick={closeMenu}>
-            <a href="#top">Home</a>
+            <Link href="/#top">Home</Link>
           </li>
           <li onClick={closeMenu}>
-            <a href="#about">About me</a>
+            <Link href="/#about">About me</Link>
           </li>
           <li onClick={closeMenu}>
-            <a href="#services">Services</a>
+            <Link href="/#services">Services</Link>
           </li>
           <li onClick={closeMenu}>
-            <a href="#work">My work</a>
+            <Link href="/#work">My work</Link>
           </li>
           <li onClick={closeMenu}>
-            <a href="#contact">Contact me</a>
+            <Link href="/#contact">Contact me</Link>
           </li>
         </ul>
       </nav>

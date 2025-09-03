@@ -1,7 +1,7 @@
 import { assets } from "@/assets/assets";
-import Image from "next/image";
-import React, { FormEvent, useState } from "react";
 import { motion } from "motion/react";
+import Image from "next/image";
+import { FormEvent } from "react";
 import toast from "react-hot-toast";
 
 const Contact = () => {

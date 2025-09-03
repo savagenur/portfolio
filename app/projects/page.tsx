@@ -1,52 +1,47 @@
+"use client";
+
+import React from "react";
+import { motion } from "motion/react";
 import { assets, workData } from "@/assets/assets";
 import Image from "next/image";
-import React from "react";
-import { useDarkMode } from "../context/DarkModeContext";
-import { motion } from "motion/react";
 import Link from "next/link";
+import Navbar from "../components/Navbar";
+import { usePathname } from "next/navigation";
 
-const Work = () => {
-  const { isDarkMode } = useDarkMode();
+const ProjectListPage = () => {
+  const pathname = usePathname();
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      transition={{ duration: 1 }}
-      id="work"
-      className="w-full px-[12%] py-10 scroll-mt-20"
-    >
-      <motion.h4
-        initial={{ y: -20, opacity: 0 }}
-        whileInView={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.6 }}
-        className="text-center mb-2 text-lg font-ovo"
-      >
-        My Portfolio
-      </motion.h4>
-      <motion.h2
-        initial={{ y: -20, opacity: 0 }}
-        whileInView={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.5, duration: 0.5 }}
-        className="text-center text-5xl font-ovo"
-      >
-        My latest work
-      </motion.h2>
-      <motion.p
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.7, delay: 0.5 }}
-        className="text-center max-w-2xl mx-auto mt-5 mb-12 font-ovo"
-      >
-        Welcome to my web development portfolio! Explore a collection of
-        projects showcasing my expertise in front-end development
-      </motion.p>
+    <>
+      <Navbar />
       <motion.div
+        key={pathname} // 👈 here
         initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.9 }}
-        className="grid grid_cols_auto my-10 gap-5 dark:text-black"
+        animate={{ opacity: 1 }}
+        whileInView={{ opacity: 1 }} // 👈 use animate instead of whileInView
+        transition={{ duration: 1 }}
+        className="w-full px-[12%] py-10 scroll-mt-20 pt-28"
       >
-        {workData.slice(0, 4).map((project, index) =>
+        <motion.h2
+          animate={{ opacity: 1 }}
+          initial={{ y: -20, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+          className="text-center text-5xl font-ovo"
+        >
+          My works
+        </motion.h2>
+
+        {/* your grid */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, delay: 0.9 }}
+          className="grid xl:grid-cols-3 sm:grid-cols-2 my-10 gap-5"
+        >
+          {workData.map((project, index) =>
           project.type === "web" ? (
             <a
               key={index}
@@ -107,29 +102,10 @@ const Work = () => {
             </Link>
           )
         )}
-      </motion.div>
-
-      <Link href="/projects">
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ delay: 1.1, duration: 0.6 }}
-          className="w-max flex items-center justify-center gap-2 text-gray-700 border-[0.5px] border-gray-700 rounded-full py-3 px-10 mx-auto my-20 hover:bg-lightHover duration-500 dark:text-white dark:border-white dark:hover:bg-darkHover"
-        >
-          Show more
-          <Image
-            src={
-              isDarkMode
-                ? assets.right_arrow_bold_dark
-                : assets.right_arrow_bold
-            }
-            alt=""
-            className="w-4"
-          />
         </motion.div>
-      </Link>
-    </motion.div>
+      </motion.div>
+    </>
   );
 };
 
-export default Work;
+export default ProjectListPage;

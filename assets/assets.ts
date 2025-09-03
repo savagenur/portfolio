@@ -43,6 +43,7 @@ import right_arrow from "./right-arrow.png";
 import send_icon from "./send-icon.png";
 import right_arrow_bold from "./right-arrow-bold.png";
 import right_arrow_bold_dark from "./right-arrow-bold-dark.png";
+import { url } from "inspector";
 
 export const assets = {
   react,
@@ -96,21 +97,34 @@ export const workData = [
   {
     title: "Galaxy - Social Media",
     description: "Web Design",
+    type: "web",
     bgImage: "/work-3.png",
+    url: "https://galaxy-xi-three.vercel.app/",
   },
   {
     title: "AniPixel - Anime Tracker",
     description: "Web Design",
+    type: "web",
     bgImage: "/work-4.png",
+    url: "https://anipixel-six.vercel.app/search/anime",
+  },
+  {
+    title: "Remembra - Relationship helper",
+    description: "Web Design",
+    type: "web",
+    bgImage: "/remembra.png",
+    url: "https://remembra.vercel.app/",
   },
   {
     title: "ToiWare - Restaurant Management",
     description: "Mobile App",
+    type: "mobile",
     bgImage: "/work-1.png",
   },
   {
     title: "Coin Saver - Expense Tracker",
     description: "Mobile App",
+    type: "mobile",
     bgImage: "/work-2.png",
   },
 ];
