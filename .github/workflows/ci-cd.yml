@@ -1,0 +1,125 @@
+name: CI & Vercel Deploy
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    name: Lint • Types • Test • Build (Next.js)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint --if-present
+
+      - name: Type check
+        run: npm run typecheck --if-present
+
+      - name: Unit tests
+        run: npm test --if-present
+
+      - name: Build (Next.js compile check)
+        run: npm run build
+
+  deploy:
+    name: Deploy via Vercel
+    needs: ci
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    if: ${{ needs.ci.result == 'success' }}
+    outputs:
+      preview_url: ${{ steps.deploy_preview.outputs.url }}
+      production_url: ${{ steps.deploy_prod.outputs.url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install deps
+        run: npm ci
+
+      # Pull project settings from Vercel
+      - name: Vercel Pull (Preview)
+        if: github.event_name == 'pull_request'
+        run: npx vercel pull --yes --environment=preview --token $VERCEL_TOKEN
+
+      - name: Vercel Pull (Production)
+        if: github.ref == 'refs/heads/main'
+        run: npx vercel pull --yes --environment=production --token $VERCEL_TOKEN
+
+      # Build with Vercel
+      - name: Build (Vercel Preview)
+        if: github.event_name == 'pull_request'
+        run: npx vercel build --token $VERCEL_TOKEN
+
+      - name: Build (Vercel Production)
+        if: github.ref == 'refs/heads/main'
+        run: npx vercel build --prod --token $VERCEL_TOKEN
+
+      # Deploy
+      - name: Deploy (Preview)
+        id: deploy_preview
+        if: github.event_name == 'pull_request'
+        run: |
+          URL=$(npx vercel deploy --prebuilt --token $VERCEL_TOKEN)
+          echo "url=$URL" >> $GITHUB_OUTPUT
+
+      - name: Deploy (Production)
+        id: deploy_prod
+        if: github.ref == 'refs/heads/main'
+        run: |
+          URL=$(npx vercel deploy --prebuilt --prod --token $VERCEL_TOKEN)
+          echo "url=$URL" >> $GITHUB_OUTPUT
+
+      # Comment Preview URL on PR
+      - name: Comment Preview URL on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const previewUrl = '${{ steps.deploy_preview.outputs.url }}';
+            if (previewUrl) {
+              github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                body: `✅ Preview deployed: ${previewUrl}`
+              });
+            }
+
+      # Echo URLs to logs
+      - name: Echo Deploy URLs
+        run: |
+          echo "✅ Preview URL:  ${{ steps.deploy_preview.outputs.url }}"
+          echo "🚀 Production URL: ${{ steps.deploy_prod.outputs.url }}"
