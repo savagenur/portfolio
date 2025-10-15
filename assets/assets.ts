@@ -121,10 +121,10 @@ export const workData = [
     type: "mobile",
     bgImage: "/work-1.png",
     images:[
-      "/toiware/1.png",
-      "/toiware/2.png",
-      "/toiware/3.png",
-      "/toiware/4.png",
+      "/toiware/11.png",
+      "/toiware/12.png",
+      "/toiware/13.png",
+      "/toiware/14.png",
     ]
   },
   {
