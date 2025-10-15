@@ -36,7 +36,7 @@ const Header = () => {
         transition={{ duration: 0.6, delay: 0.7 }}
         className="max-w-2xl mx-auto font-ovo"
       >
-        I am a frontend developer from Portland, USA, with 4 years of experience in web and mobile app design and development. I specialize in creating modern, responsive, and user-friendly applications.
+        I am a frontend developer from Portland, USA, with 4 years of experience in web and mobile app design development. I specialize in creating modern, responsive, and user-friendly applications.
       </motion.p>
       <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
         <motion.a

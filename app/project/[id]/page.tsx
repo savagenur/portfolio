@@ -2,6 +2,7 @@
 import Navbar from "@/app/components/Navbar";
 import { workData } from "@/assets/assets";
 import { motion } from "motion/react";
+import Image from "next/image";
 import { use } from "react";
 
 type ProjectDetailPageProps = { params: Promise<{ id: string }> };
@@ -43,8 +44,24 @@ const ProjectDetailPage = ({ params }: ProjectDetailPageProps) => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6, delay: 0.9 }}
-          className="grid xl:grid-cols-3 sm:grid-cols-2 my-10 gap-5"
-        ></motion.div>
+          className="grid xl:grid-cols-4 sm:grid-cols-3 grid-cols-2 my-10 gap-5 "
+        >
+          {project.images?.map((image) => (
+            <div
+              key={image}
+              className="flex justify-center items-center" // center image
+            >
+              <Image
+                src={image}
+                alt="Item"
+                className="rounded-2xl"
+                width={150} // base size
+                height={100}
+                style={{ width: "auto", height: "auto", maxWidth: "100%" }}
+              />
+            </div>
+          ))}
+        </motion.div>
       </motion.div>
     </>
   );

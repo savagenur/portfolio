@@ -120,12 +120,25 @@ export const workData = [
     description: "Mobile App",
     type: "mobile",
     bgImage: "/work-1.png",
+    images:[
+      "/toiware/11.png",
+      "/toiware/12.png",
+      "/toiware/13.png",
+      "/toiware/14.png",
+    ]
   },
   {
     title: "Coin Saver - Expense Tracker",
     description: "Mobile App",
     type: "mobile",
     bgImage: "/work-2.png",
+     images:[
+      "/coin_saver/1.png",
+      "/coin_saver/2.png",
+      "/coin_saver/3.png",
+      "/coin_saver/4.png",
+      "/coin_saver/5.png",
+    ]
   },
 ];
 
